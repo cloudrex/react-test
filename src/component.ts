@@ -1,14 +1,29 @@
 import {Renderer} from "./core";
+import {EventEmitter} from "events";
 
-export default abstract class Component<TProps extends object = any, TState extends object = any> {
-    protected readonly props: TProps;
+export interface IComponent<TState = any> {
+    setRenderer(renderer: Renderer<TState>): this;
+    invokeRenderer(): this;
+    render(): XComponent;
+}
+
+export type XComponent = any;
+
+export default abstract class Component<TState = any, TChild = any> extends EventEmitter implements IComponent {
+    public static create(tag: string, attributes: any, content: any): void {
+        console.log("Create element", tag, attributes, typeof content);
+    }
+
+    public readonly child: TChild;
 
     protected renderer?: Renderer<TState>;
     protected state: TState;
 
-    public constructor(props?: TProps) {
-        this.props = props || {} as TProps;
+    public constructor() {
+        super();
+
         this.state = {} as TState;
+        this.child = {} as TChild;
     }
 
     public setRenderer(renderer: Renderer<TState>): this {
@@ -27,7 +42,7 @@ export default abstract class Component<TProps extends object = any, TState exte
         return this;
     }
 
-    public abstract render(): Component;
+    public abstract render(): XComponent;
 
     protected update(state: Partial<TState>): this {
         this.state = {
@@ -45,6 +60,14 @@ export default abstract class Component<TProps extends object = any, TState exte
     }
 
     protected componentDidMount(): void {
+        //
+    }
+
+    protected componentWillUpdate(): void {
+        //
+    }
+
+    protected componentDidUpdate(): void {
         //
     }
 }

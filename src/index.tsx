@@ -1,10 +1,4 @@
-import UI from "./ui";
+import Core from "./core";
+import $App from "./test-components/app";
 
-<testing n="f" nf={"f"} nd={
-    <final>Hi</final>
-}>
-    Hello world
-    <test>hello</test>
-</testing>
-
-// TODO
+Core.mount(new $App());

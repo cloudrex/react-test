@@ -11,9 +11,23 @@ export default class $App extends Component<IState> {
         age: 0
     };
 
+    public componentDidMount() {
+        setTimeout(() => {
+            this.update({
+                age: Date.now()
+            });
+        }, 3000);
+    }
+
     public render(): XComponent {
+        console.log("Rendering ..");
+
         return (
-            <string>app component</string>
+            <string name="john">
+                <nest>
+                    {this.state.name}
+                </nest>
+            </string>
         );
     }
 

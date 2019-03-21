@@ -1,23 +1,79 @@
-import {Renderer} from "./core";
+import Core from "./core";
 import {EventEmitter} from "events";
+import Util from "./util";
+import shortid from "shortid";
 
-export interface IComponent<TState = any> {
-    setRenderer(renderer: Renderer<TState>): this;
-    invokeRenderer(): this;
+export interface IComponent {
+    rerender(): this;
     render(): XComponent;
 }
 
 export type XComponent = any;
 
+/**
+ * Represents an element tag string.
+ */
+export type Tag = string;
+
+export interface IElement {
+    /**
+     * A unique string used to identify this specific
+     * element.
+     */
+    readonly id: ShortId;
+
+    /**
+     * The element's tag string.
+     */
+    readonly tag: Tag;
+
+    /**
+     * The element's attributes.
+     */
+    readonly attr: any;
+
+    /**
+     * The element's content.
+     */
+    readonly content: any;
+}
+
+/**
+ * Unique id string.
+ */
+export type ShortId = string;
+
 export default abstract class Component<TState = any, TChild = any> extends EventEmitter implements IComponent {
-    public static create(tag: string, attributes: any, content: any): void {
-        console.log("Create element", tag, attributes, typeof content);
+    protected static readonly elements: Map<ShortId, IElement> = new Map();
+
+    public static create(tag: string, attributes: any, content: any): IElement {
+        // Custom component.
+        if (Util.isUppercase(tag[0])) {
+            throw new Error("Support for custom components is not yet implemented");
+        }
+
+        // Otherwise, it's an HTML element.
+        const id: ShortId = shortid.generate();
+
+        const elm: IElement = {
+            id,
+            attr: attributes,
+            content,
+            tag
+        };
+
+        Component.elements.set(id, elm);
+
+        console.log(Component.elements.get(id)!);
+        console.log("\n");
+
+        return elm;
     }
 
     public readonly child: TChild;
 
-    protected renderer?: Renderer<TState>;
     protected state: TState;
+    protected timeouts: number[] = [];
 
     public constructor() {
         super();
@@ -26,18 +82,8 @@ export default abstract class Component<TState = any, TChild = any> extends Even
         this.child = {} as TChild;
     }
 
-    public setRenderer(renderer: Renderer<TState>): this {
-        this.renderer = renderer;
-
-        return this;
-    }
-
-    public invokeRenderer(): this {
-        if (this.renderer === undefined) {
-            throw new Error("Unexpected renderer to be undefined");
-        }
-
-        this.renderer(this.state);
+    public rerender(): this {
+        Core.rerender(this);
 
         return this;
     }
@@ -50,24 +96,24 @@ export default abstract class Component<TState = any, TChild = any> extends Even
             ...state
         };
 
-        this.invokeRenderer();
+        this.rerender();
 
         return this;
     }
 
-    protected componentWillMount(): void {
+    public componentWillMount(): void {
         //
     }
 
-    protected componentDidMount(): void {
+    public componentDidMount(): void {
         //
     }
 
-    protected componentWillUpdate(): void {
+    public componentWillUpdate(): void {
         //
     }
 
-    protected componentDidUpdate(): void {
+    public componentDidUpdate(): void {
         //
     }
 }

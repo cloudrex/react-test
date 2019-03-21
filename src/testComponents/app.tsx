@@ -1,4 +1,5 @@
 import Component, {XComponent} from "../component";
+import $HelloWorld from "./helloWorld";
 
 interface IState {
     readonly name: string;
@@ -23,7 +24,7 @@ export default class $App extends Component<IState> {
         console.log("Rendering ..");
 
         return (
-            <string name="john" />
+            <$HelloWorld />
         );
     }
 

@@ -2,6 +2,7 @@ import Core from "./core";
 import {EventEmitter} from "events";
 import Util from "./util";
 import shortid from "shortid";
+import {Action} from "./helpers";
 
 export interface IComponent {
     rerender(): this;
@@ -11,9 +12,9 @@ export interface IComponent {
 export type XComponent = any;
 
 /**
- * Represents an element tag string.
+ * Represents an element tag.
  */
-export type Tag = string;
+export type Tag = string | Action;
 
 /**
  * The possible content of an element.
@@ -51,13 +52,7 @@ export type ShortId = string;
 export default abstract class Component<TState = any, TChild = any> extends EventEmitter implements IComponent {
     protected static readonly elements: Map<ShortId, IElement> = new Map();
 
-    public static create(tag: string, attributes: any, ...content: ElementContent): IElement {
-        // Custom component.
-        if (Util.isUppercase(tag[0])) {
-            throw new Error("Support for custom components is not yet implemented");
-        }
-
-        // Otherwise, it's an HTML element.
+    public static create(tag: Tag, attributes: any, ...content: ElementContent): IElement {
         const id: ShortId = shortid.generate();
 
         const elm: IElement = {

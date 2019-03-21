@@ -15,6 +15,11 @@ export type XComponent = any;
  */
 export type Tag = string;
 
+/**
+ * The possible content of an element.
+ */
+export type ElementContent = Array<string | IElement>;
+
 export interface IElement {
     /**
      * A unique string used to identify this specific
@@ -35,7 +40,7 @@ export interface IElement {
     /**
      * The element's content.
      */
-    readonly content: any;
+    readonly content: ElementContent;
 }
 
 /**
@@ -46,7 +51,7 @@ export type ShortId = string;
 export default abstract class Component<TState = any, TChild = any> extends EventEmitter implements IComponent {
     protected static readonly elements: Map<ShortId, IElement> = new Map();
 
-    public static create(tag: string, attributes: any, content: any): IElement {
+    public static create(tag: string, attributes: any, ...content: ElementContent): IElement {
         // Custom component.
         if (Util.isUppercase(tag[0])) {
             throw new Error("Support for custom components is not yet implemented");
@@ -63,9 +68,6 @@ export default abstract class Component<TState = any, TChild = any> extends Even
         };
 
         Component.elements.set(id, elm);
-
-        console.log(Component.elements.get(id)!);
-        console.log("\n");
 
         return elm;
     }

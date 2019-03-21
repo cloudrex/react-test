@@ -23,11 +23,7 @@ export default class $App extends Component<IState> {
         console.log("Rendering ..");
 
         return (
-            <string name="john">
-                <nest>
-                    {this.state.name}
-                </nest>
-            </string>
+            <string name="john" />
         );
     }
 

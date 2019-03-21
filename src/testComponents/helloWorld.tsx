@@ -25,10 +25,3 @@ export default class $HelloWorld extends Component<IState> {
         return this;
     }
 }
-
-
-class TestUpperCaseComp {
-    public constructor(arg: any) {
-        console.log("Constructed with args: ", arg);
-    }
-}

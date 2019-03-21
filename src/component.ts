@@ -1,11 +1,31 @@
-import ReactTest from "./core";
+import ReactTest from "./reactTest";
 import {EventEmitter} from "events";
 import shortid from "shortid";
 import {Action} from "./helpers";
 
-export interface IComponent {
-    rerender(): this;
+export interface IComponent<TProps, TState> {
+    mount(): void;
     render(): IElement;
+
+    /**
+     * Invoked before the component is mounted onto the DOM.
+     */
+    componentWillMount?(): void;
+
+    /**
+     * Invoked after the component is mounted onto the DOM.
+     */
+    componentDidMount?(): void;
+
+    /**
+     * Invoked before a state update occurs.
+     */
+    componentWillUpdate?(): void;
+
+    /**
+     * Invoked after a state update occurs.
+     */
+    componentDidUpdate?(): void;
 }
 
 /**
@@ -46,7 +66,18 @@ export interface IElement {
  */
 export type ShortId = string;
 
-export default abstract class Component<TProps extends {} = {}, TState extends {} = {}> extends EventEmitter implements IComponent {
+export type Ref<T extends HTMLElement> = T;
+
+// TODO: Use IComponentProps as TProps extends (IComponentProps & {}), to allow merging of key=, ref=, etc. and custom props.
+/**
+ * Internal props used by the Component class.
+ */
+export interface IComponentProps {
+    readonly key?: string | number;
+    readonly ref?: Ref<any>;
+}
+
+export default abstract class Component<TProps extends {} = {}, TState extends {} = {}> extends EventEmitter implements IComponent<TProps, TState> {
     protected static readonly elements: Map<ShortId, IElement> = new Map();
 
     public static create(tag: Tag, attributes: any, ...content: ElementContent): IElement {
@@ -75,50 +106,27 @@ export default abstract class Component<TProps extends {} = {}, TState extends {
         this.props = props;
     }
 
-    public rerender(): this {
-        ReactTest.rerender(this);
-
-        return this;
+    /**
+     * Mount (or re-mount) this element onto the DOM.
+     */
+    public mount(): void {
+        ReactTest.mount(this.render());
     }
 
     public abstract render(): IElement;
 
+    /**
+     * Update the local state of this element.
+     */
     protected update(state: Partial<TProps>): this {
         this.state = {
             ...this.state,
             ...state
         };
 
-        this.rerender();
+        // Mount the component if applicable.
+        this.mount();
 
         return this;
-    }
-
-    /**
-     * Invoked before the component is mounted onto the DOM.
-     */
-    public componentWillMount(): void {
-        //
-    }
-
-    /**
-     * Invoked after the component is mounted onto the DOM.
-     */
-    public componentDidMount(): void {
-        //
-    }
-
-    /**
-     * Invoked before a state update occurs.
-     */
-    public componentWillUpdate(): void {
-        //
-    }
-
-    /**
-     * Invoked after a state update occurs.
-     */
-    public componentDidUpdate(): void {
-        //
     }
 }

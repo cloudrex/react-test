@@ -1,12 +1,12 @@
 import Component, {IElement} from "../component";
 
-interface IState {
+interface IProps {
     readonly name: string;
     readonly age: number;
 }
 
-export default class $HelloWorld extends Component<IState> {
-    protected state: IState = {
+export default class $HelloWorld extends Component<IProps> {
+    protected state: IProps = {
         name: "john doe",
         age: 0
     };

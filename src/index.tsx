@@ -1,4 +1,4 @@
-import ReactTest from "./core";
+import ReactTest from "./reactTest";
 import $App from "./testComponents/app";
 import jsdom from "jsdom";
 import Component from "./component";

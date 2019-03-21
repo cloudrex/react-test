@@ -1,10 +1,14 @@
 import Component, {IElement, Tag} from "./component";
-import {doc, win} from ".";
+import {doc} from ".";
 
 export type Renderer<T> = (state: T) => void;
 
 export default abstract class ReactTest {
     protected static root: Element;
+
+    public static test(): void {
+        const c: Component = null as any;
+    }
 
     /**
      * Initialize the root element.
@@ -22,6 +26,9 @@ export default abstract class ReactTest {
         return typeof tag === "function" ? "div" : tag;
     }
 
+    /**
+     * Recursively convert a custom element to an HTML element.
+     */
     public static convert(elm: IElement): HTMLElement {
         // TODO: Debugging.
         console.log(elm);
@@ -49,6 +56,10 @@ export default abstract class ReactTest {
         return htmlElm;
     }
 
+    // TODO: Here, we would implement a Virtual DOM. Then, we'd determine whether the component should be (re-mounted) if the state changed, or always mount on first state.
+    /**
+     * Mount a custom element onto the DOM.
+     */
     public static mount(elm: IElement): void {
         if (elm === null) {
             throw new Error("Specified selector does not match any existing element");
@@ -67,9 +78,5 @@ export default abstract class ReactTest {
 
         // Invoke the component's did mount event.
         // elm.componentDidMount();
-    }
-
-    public static rerender(component: Component): void {
-        console.log(component.render());
     }
 }

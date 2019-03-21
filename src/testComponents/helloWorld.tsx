@@ -1,4 +1,4 @@
-import Component, {XComponent} from "../component";
+import Component, {IElement} from "../component";
 
 interface IState {
     readonly name: string;
@@ -11,7 +11,7 @@ export default class $HelloWorld extends Component<IState> {
         age: 0
     };
 
-    public render(): XComponent {
+    public render(): IElement {
         return (
             <string>hello world</string>
         );

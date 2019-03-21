@@ -1,4 +1,4 @@
-import Component, {XComponent} from "../component";
+import Component, {IElement} from "../component";
 import $HelloWorld from "./helloWorld";
 
 interface IProps {
@@ -20,7 +20,7 @@ export default class $App extends Component<IProps> {
         }, 3000);
     }
 
-    public render(): XComponent {
+    public render(): IElement {
         console.log("Rendering ..");
 
         return (

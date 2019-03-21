@@ -1,15 +1,12 @@
 import ReactTest from "./core";
 import {EventEmitter} from "events";
-import Util from "./util";
 import shortid from "shortid";
 import {Action} from "./helpers";
 
 export interface IComponent {
     rerender(): this;
-    render(): XComponent;
+    render(): IElement;
 }
-
-export type XComponent = any;
 
 /**
  * Represents an element tag.
@@ -84,7 +81,7 @@ export default abstract class Component<TProps extends {} = {}, TState extends {
         return this;
     }
 
-    public abstract render(): XComponent;
+    public abstract render(): IElement;
 
     protected update(state: Partial<TProps>): this {
         this.state = {

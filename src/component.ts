@@ -97,18 +97,30 @@ export default abstract class Component<TProps extends {} = {}, TState extends {
         return this;
     }
 
+    /**
+     * Invoked before the component is mounted onto the DOM.
+     */
     public componentWillMount(): void {
         //
     }
 
+    /**
+     * Invoked after the component is mounted onto the DOM.
+     */
     public componentDidMount(): void {
         //
     }
 
+    /**
+     * Invoked before a state update occurs.
+     */
     public componentWillUpdate(): void {
         //
     }
 
+    /**
+     * Invoked after a state update occurs.
+     */
     public componentDidUpdate(): void {
         //
     }

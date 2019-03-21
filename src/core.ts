@@ -23,6 +23,7 @@ export default abstract class ReactTest {
     }
 
     public static convert(elm: IElement): HTMLElement {
+        // TODO: Debugging.
         console.log(elm);
 
         // Create the HTML element. Resolve the tag.

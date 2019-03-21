@@ -1,4 +1,4 @@
-import Core from "./core";
+import ReactTest from "./core";
 import {EventEmitter} from "events";
 import Util from "./util";
 import shortid from "shortid";
@@ -49,7 +49,7 @@ export interface IElement {
  */
 export type ShortId = string;
 
-export default abstract class Component<TState = any, TChild = any> extends EventEmitter implements IComponent {
+export default abstract class Component<TProps extends {} = {}, TState extends {} = {}> extends EventEmitter implements IComponent {
     protected static readonly elements: Map<ShortId, IElement> = new Map();
 
     public static create(tag: Tag, attributes: any, ...content: ElementContent): IElement {
@@ -67,27 +67,26 @@ export default abstract class Component<TState = any, TChild = any> extends Even
         return elm;
     }
 
-    public readonly child: TChild;
-
     protected state: TState;
+    protected props: TProps;
     protected timeouts: number[] = [];
 
-    public constructor() {
+    public constructor(props: TProps) {
         super();
 
-        this.state = {} as TState;
-        this.child = {} as TChild;
+        this.state = {} as any;
+        this.props = props;
     }
 
     public rerender(): this {
-        Core.rerender(this);
+        ReactTest.rerender(this);
 
         return this;
     }
 
     public abstract render(): XComponent;
 
-    protected update(state: Partial<TState>): this {
+    protected update(state: Partial<TProps>): this {
         this.state = {
             ...this.state,
             ...state

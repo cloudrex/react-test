@@ -1,13 +1,13 @@
 import Component, {XComponent} from "../component";
 import $HelloWorld from "./helloWorld";
 
-interface IState {
+interface IProps {
     readonly name: string;
     readonly age: number;
 }
 
-export default class $App extends Component<IState> {
-    protected state: IState = {
+export default class $App extends Component<IProps> {
+    protected state: IProps = {
         name: "john doe",
         age: 0
     };
@@ -24,7 +24,7 @@ export default class $App extends Component<IState> {
         console.log("Rendering ..");
 
         return (
-            <$HelloWorld />
+            <$HelloWorld name="john" age={100} />
         );
     }
 

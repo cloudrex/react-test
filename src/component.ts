@@ -72,12 +72,12 @@ export type Ref<T extends HTMLElement> = T;
 /**
  * Internal props used by the Component class.
  */
-export interface IComponentProps {
+export type IComponentProps = {
     readonly key?: string | number;
     readonly ref?: Ref<any>;
 }
 
-export default abstract class Component<TProps extends {} = {}, TState extends {} = {}> extends EventEmitter implements IComponent<TProps, TState> {
+export default abstract class Component<TProps extends {} = {}, TState extends {} = {}> extends EventEmitter implements IComponent<TProps & IComponentProps, TState> {
     protected static readonly elements: Map<ShortId, IElement> = new Map();
 
     public static create(tag: Tag, attributes: any, ...content: ElementContent): IElement {

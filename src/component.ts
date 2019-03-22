@@ -4,7 +4,14 @@ import shortid from "shortid";
 import {Action} from "./helpers";
 
 export interface IComponent<TProps, TState> {
+    /**
+     * Mount (or re-mount) this element onto the DOM.
+     */
     mount(): void;
+
+    /**
+     * Render the component.
+     */
     render(): IElement;
 
     /**
@@ -77,7 +84,7 @@ export type IComponentProps = {
     readonly ref?: Ref<any>;
 }
 
-export default abstract class Component<TProps extends {} = {}, TState extends {} = {}> extends EventEmitter implements IComponent<TProps & IComponentProps, TState> {
+export default abstract class Component<TProps extends {} = {}, TState extends {} = {}> extends EventEmitter implements IComponent<TProps, TState> {
     protected static readonly elements: Map<ShortId, IElement> = new Map();
 
     public static create(tag: Tag, attributes: any, ...content: ElementContent): IElement {
@@ -113,6 +120,9 @@ export default abstract class Component<TProps extends {} = {}, TState extends {
         ReactTest.mount(this.render());
     }
 
+    /**
+     * Render the component.
+     */
     public abstract render(): IElement;
 
     /**

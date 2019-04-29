@@ -21,7 +21,7 @@
     },
     "homepage": "https://github.com/cloudrex/react-test#readme",
     "devDependencies": {
-        "@babel/cli": "^7.2.3",
+        "@babel/cli": "^7.4.4",
         "@babel/core": "^7.2.2",
         "@types/jsdom": "^12.2.3",
         "@types/node": "^10.12.18",
